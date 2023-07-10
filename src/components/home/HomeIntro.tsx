@@ -1,7 +1,8 @@
 'use client';
 
 import { getPath } from "@/utils/getPath";
-import { Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
+import { Heading, Stack, Text } from "@chakra-ui/react";
 
 export const HomeIntro = () => {
     return <Stack>

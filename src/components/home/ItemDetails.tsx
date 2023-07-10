@@ -5,7 +5,7 @@ import { KanjiDisplay } from "../common/KanjiText";
 export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: KanjiData[]}) => {
     const { data: item, kanjiData} = props;
     
-    return <Grid templateColumns="1fr 4fr">
+    return <Grid templateColumns="128px 1fr">
         <GridItem>
             <Stack>
                 <KanjiDisplay data={item.part[0]} showAlternative/>
@@ -18,8 +18,8 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
                     if (!data) {
                         console.log(d.kanji)
                     }
-                    return <HStack key={d.kanji} justifyContent="space-between" alignItems="flex-start" w="full">
-                        <Box width={24}>
+                    return <HStack key={d.kanji} justifyContent="space-between" alignItems="flex-start" w="full" id={d.kanji} mt="-64px" pt="64px">
+                        <Box width={24} mx={2} textAlign="center">
                          <KanjiDisplay  data={d} />
                         </Box>
                         <Stack width={48}>

@@ -14,14 +14,14 @@ export function KanjiDisplay (props: {
   const fontWeight = isSmall ? 'normal' : 'bold'
 
   return (
-    <chakra.ruby fontSize={fontSize} textAlign="center" fontFamily="Meiryou">
+    <chakra.ruby fontSize={fontSize} textAlign="center" fontFamily="Minchou, Meiryou">
       <Text as="span" fontWeight={fontWeight}>
         {kanji?.replace(/[\(\［](.*?)[\］\)]/g, "").split("・")[0]}
       </Text>
       {!hideFurigana && (
         <chakra.rt>{reading}</chakra.rt>
         )}
-        {showAlternative && (kanji?.length ?? 0) > 1 &&  <Text as="span" fontWeight={fontWeight}>
+        {showAlternative && /[\(\［](.*?)[\］\)]/.test(kanji ?? "") &&  <Text as="span" fontWeight={fontWeight}>
         {kanji?.substring(1)}
       </Text>}
     </chakra.ruby>

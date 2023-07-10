@@ -16,7 +16,7 @@ const fetchData = async (row: number) => {
    const kanjiData = JSON.parse(await readFile(join(__dirname, `../../../../../src/data/kanji-data/${row}.json`),"utf-8")) 
 
    return {
-    wordsData: data.filter((d:PhoneticSemanticData) => KANA_COLUMNS[row].includes(d.pronounciation[0])),
+    wordsData: data.filter((d:PhoneticSemanticData) => KANA_COLUMNS[row].includes(d.pronunciation[0])),
     kanjiData
    }
 }
