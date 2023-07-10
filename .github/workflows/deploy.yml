@@ -20,7 +20,9 @@ jobs:
           key: ${{ runner.os }}-nextjs-v3-${{ hashFiles('**/pnpm-lock.json') }}
 
       - name: Install and Build 🔧
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v2 
+        with:
+          version: 8.4.0
 
       - run: pnpm
       - run: pnpm build:static
