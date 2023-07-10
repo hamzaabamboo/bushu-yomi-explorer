@@ -18,7 +18,10 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
                     if (!data) {
                         console.log(d.kanji)
                     }
-                    return <HStack key={d.kanji} justifyContent="space-between" alignItems="flex-start" w="full" id={d.kanji} mt="-64px" pt="64px">
+                    const isIrregular = item.pronunciation !== d.reading;
+                    
+                    return <Box key={d.kanji} backgroundColor={isIrregular? "gray.100" : "unset"}  w="full" py={1}>
+                        <HStack justifyContent="space-between" alignItems="flex-start" w="full" id={d.kanji} mt="-64px" pt="64px">
                         <Box width={24} mx={2} textAlign="center">
                          <KanjiDisplay  data={d} />
                         </Box>
@@ -31,6 +34,7 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
                             <Text key={idx}>{w}</Text>)}
                         </Stack>
                     </HStack>
+                    </Box>
                 })}
             </Stack>
         </GridItem>
