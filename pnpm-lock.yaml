@@ -58,6 +58,9 @@ dependencies:
   typescript:
     specifier: 5.1.6
     version: 5.1.6
+  wanakana:
+    specifier: ^5.1.0
+    version: 5.1.0
 
 packages:
 
@@ -3893,6 +3896,11 @@ packages:
       detect-node-es: 1.1.0
       react: 18.2.0
       tslib: 2.6.0
+    dev: false
+
+  /wanakana@5.1.0:
+    resolution: {integrity: sha512-QJ5XNTqL5gM1JR2ikESMi+xKx16TIuZDynj6LagqK4YCWnRihtxprzCnVI1SappWI8RuiSAANGoePEV5pptiiQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /watchpack@2.4.0:

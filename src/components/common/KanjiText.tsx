@@ -5,8 +5,9 @@ export function KanjiDisplay (props: {
   data: Partial<Kanji>
   hideFurigana?: boolean
   isSmall?: boolean
+  showAlternative?: boolean
 }) {
-  const { data, isSmall = false, hideFurigana = false } = props
+  const { data, isSmall = false, hideFurigana = false, showAlternative = false} = props
   const { kanji, reading } = data
 
   const fontSize = isSmall ? 'lg' : '3xl'
@@ -20,6 +21,9 @@ export function KanjiDisplay (props: {
       {!hideFurigana && (
         <chakra.rt>{reading}</chakra.rt>
         )}
+        {showAlternative && (kanji?.length ?? 0) > 1 &&  <Text as="span" fontWeight={fontWeight}>
+        {kanji?.substring(1)}
+      </Text>}
     </chakra.ruby>
   )
 }
