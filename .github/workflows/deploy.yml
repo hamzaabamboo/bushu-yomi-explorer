@@ -25,12 +25,11 @@ jobs:
           version: 8.4.0
 
       - run: pnpm install
-      - run: pnpm build:static
+      - run: pnpm build
         env:
           DEPLOY_TARGET: "gh-pages"
-          NEXT_PUBLIC_BASE_URL: "/muni-web"
+          NEXT_PUBLIC_BASE_URL: "/bushu-yomi-explorer"
           CI: false
-          MAGIC: ${{ secrets.MAGIC }}
 
       - run: touch out/.nojekyll
 
