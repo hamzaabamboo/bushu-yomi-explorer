@@ -18,8 +18,9 @@ import {
   Switch,
   Text
 } from "@chakra-ui/react";
-import { groupBy, values } from "lodash";
-import { Fragment, useMemo, useState } from "react";
+import { debounce, groupBy, values } from "lodash";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+import { isKana, toKatakana } from "wanakana";
 import { KanjiDisplay } from "../common/KanjiText";
 import { ItemDetails } from "./ItemDetails";
 
@@ -29,9 +30,12 @@ export const AllViewer = (props: {
   hideSearch?: boolean;
   showDetails?: boolean;
 }) => {
-  const { data, hideSearch = true, showDetails = false, kanjiData } = props;
+  const { data, hideSearch = false, showDetails = false, kanjiData } = props;
   const [joyo, setJoyo] = useLocalStorage("showJoyo", true);
-  const [filter, setFilter] = useState("");
+  const [input, setInput] = useState("");
+  const [filter, _setFilter] = useState("");
+  const setFilter = useCallback((input:string) => debounce(_setFilter, 500)(input), [_setFilter])
+  
   const groups = useMemo(
     () =>
       values(
@@ -50,6 +54,19 @@ export const AllViewer = (props: {
     [data, joyo]
   );
 
+  useEffect(() => {
+    setFilter(input);
+  }, [input])
+
+  const filteredList = useMemo(() => !filter ? groups: groups.map(g => {
+    if (isKana(filter)) {
+      if (g[0].pronunciation.includes(toKatakana(filter))) return g;
+      return g.map(g => ({ ...g, kanjis: g.kanjis.filter(r => r.reading && toKatakana(filter) === toKatakana(r.reading))})).filter(g => g.kanjis.length > 0)
+    } else {
+      return g.map(g => ({ ...g, kanjis: g.kanjis.filter(r => filter.split('').filter((a) => r.kanji.includes(a)).length > 0)})).filter(g => g.kanjis.length > 0)
+    }
+  }).filter(g => g.length > 0), [groups, filter])
+  
   return (
     <Stack>
       <HStack>
@@ -63,23 +80,25 @@ export const AllViewer = (props: {
       {!hideSearch && (
         <Input
           w="full"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
+          value={input}
+          fontSize="xl"
+          mb={2}
+          onChange={(e) => setInput(e.target.value)}
         />
       )}
       <Grid templateColumns={["1fr", null, "80px 1fr"]} gap={6} w="full">
-        {groups.map((g) => {
+        {filteredList.map((g) => {
           return (
             <Fragment key={g[0].pronunciation}>
               <GridItem h="full">
                 <Stack direction={["column", null, "row"]} h="full" alignItems="flex-start">
                   <Heading flex="1">{g[0].pronunciation}</Heading>
-                  <Show above="md">
+                  <Hide below="md">
                     <Divider orientation="vertical"/>
-                  </Show>
-                  <Hide above="md">
-                    <Divider orientation="horizontal"/>
                   </Hide>
+                  <Show below="md">
+                    <Divider orientation="horizontal"/>
+                  </Show>
                 </Stack>
               </GridItem>
               <GridItem  width="full">
@@ -114,7 +133,7 @@ export const AllViewer = (props: {
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        href={getPath(`/browse/${KANA_COLUMNS.findIndex(s => s.includes(d.pronunciation?.[0]))}#${d.part[0].kanji}`)}
+                        href={getPath(`/browse/${KANA_COLUMNS.findIndex(s => s.includes(d.pronunciation?.[0]))　}#${d.part[0].kanji}`)}
                         >
                             <KanjiDisplay data={d.part[0]} />
                         </Link>
