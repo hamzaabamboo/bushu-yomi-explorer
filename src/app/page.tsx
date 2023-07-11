@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Navigation } from "@/components/common/Navigation";
+import { SearchBar } from "@/components/common/SearchBar";
 import { AllViewer } from "@/components/home/AllViewer";
 import { HomeIntro } from "@/components/home/HomeIntro";
 import { PhoneticSemanticData } from "@/types";
@@ -18,6 +19,7 @@ export default async function Home() {
     <Layout>
       <HomeIntro />
       <Navigation />
+      <SearchBar data={data}/>
       <AllViewer data={data}/>
     </Layout>
   )

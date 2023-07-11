@@ -12,15 +12,13 @@ import {
   HStack,
   Heading,
   Hide,
-  Input,
   Show,
   Stack,
   Switch,
   Text
 } from "@chakra-ui/react";
-import { debounce, groupBy, values } from "lodash";
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
-import { isKana, toKatakana } from "wanakana";
+import { groupBy, values } from "lodash";
+import { Fragment, useMemo } from "react";
 import { KanjiDisplay } from "../common/KanjiText";
 import { ItemDetails } from "./ItemDetails";
 
@@ -32,10 +30,6 @@ export const AllViewer = (props: {
 }) => {
   const { data, hideSearch = false, showDetails = false, kanjiData } = props;
   const [joyo, setJoyo] = useLocalStorage("showJoyo", true);
-  const [input, setInput] = useState("");
-  const [filter, _setFilter] = useState("");
-  const setFilter = useCallback((input:string) => debounce(_setFilter, 500)(input), [_setFilter])
-  
   const groups = useMemo(
     () =>
       values(
@@ -53,19 +47,6 @@ export const AllViewer = (props: {
       ),
     [data, joyo]
   );
-
-  useEffect(() => {
-    setFilter(input);
-  }, [input])
-
-  const filteredList = useMemo(() => !filter ? groups: groups.map(g => {
-    if (isKana(filter)) {
-      if (g[0].pronunciation.includes(toKatakana(filter))) return g;
-      return g.map(g => ({ ...g, kanjis: g.kanjis.filter(r => r.reading && toKatakana(filter) === toKatakana(r.reading))})).filter(g => g.kanjis.length > 0)
-    } else {
-      return g.map(g => ({ ...g, kanjis: g.kanjis.filter(r => filter.split('').filter((a) => r.kanji.includes(a)).length > 0)})).filter(g => g.kanjis.length > 0)
-    }
-  }).filter(g => g.length > 0), [groups, filter])
   
   return (
     <Stack>
@@ -77,17 +58,8 @@ export const AllViewer = (props: {
         <Text>Show Joyo Only</Text>
       </HStack>
       <Divider />
-      {!hideSearch && (
-        <Input
-          w="full"
-          value={input}
-          fontSize="xl"
-          mb={2}
-          onChange={(e) => setInput(e.target.value)}
-        />
-      )}
       <Grid templateColumns={["1fr", null, "80px 1fr"]} gap={6} w="full">
-        {filteredList.map((g) => {
+        {groups.map((g) => {
           return (
             <Fragment key={g[0].pronunciation}>
               <GridItem h="full">

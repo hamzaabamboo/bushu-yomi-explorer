@@ -1,5 +1,6 @@
 import { Layout } from "@/components/Layout";
 import { Navigation } from "@/components/common/Navigation";
+import { SearchBar } from "@/components/common/SearchBar";
 import { AllViewer } from "@/components/home/AllViewer";
 import { HomeIntro } from "@/components/home/HomeIntro";
 import { KANA_COLUMNS, KANA_ROWS } from "@/data/gojuuon";
@@ -16,8 +17,9 @@ const fetchData = async (row: number) => {
    const kanjiData = JSON.parse(await readFile(join(__dirname, `../../../../../src/data/kanji-data/${row}.json`),"utf-8")) 
 
    return {
-    wordsData: data.filter((d:PhoneticSemanticData) => KANA_COLUMNS[row].includes(d.pronunciation[0])),
-    kanjiData
+    wordsData: data,
+    kanjiData,
+    row
    }
 }
 
@@ -29,7 +31,8 @@ export default async function Home(props: { params: { index: number } }) {
     <Layout>
       <HomeIntro />
       <Navigation />
-      <AllViewer data={wordsData} kanjiData={kanjiData} showDetails/>
+      <SearchBar data={wordsData} />
+      <AllViewer data={wordsData.filter((d:PhoneticSemanticData) => KANA_COLUMNS[index].includes(d.pronunciation[0]))} kanjiData={kanjiData} showDetails/>
     </Layout>
   )
 }
