@@ -6,16 +6,17 @@ import { getPath } from "@/utils/getPath";
 import { isJoyo } from "@/utils/joyo";
 import { Link } from "@chakra-ui/next-js";
 import {
-  Box,
   Divider,
   Grid,
   GridItem,
   HStack,
   Heading,
+  Hide,
   Input,
+  Show,
   Stack,
   Switch,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { groupBy, values } from "lodash";
 import { Fragment, useMemo, useState } from "react";
@@ -66,25 +67,29 @@ export const AllViewer = (props: {
           onChange={(e) => setFilter(e.target.value)}
         />
       )}
-      <Grid templateColumns="80px 1fr" gap={6}>
+      <Grid templateColumns={["1fr", null, "80px 1fr"]} gap={6} w="full">
         {groups.map((g) => {
           return (
             <Fragment key={g[0].pronunciation}>
               <GridItem h="full">
-                <HStack h="full" alignItems="flex-start">
+                <Stack direction={["column", null, "row"]} h="full" alignItems="flex-start">
                   <Heading flex="1">{g[0].pronunciation}</Heading>
-                  <Divider orientation="vertical"/>
-                </HStack>
+                  <Show above="md">
+                    <Divider orientation="vertical"/>
+                  </Show>
+                  <Hide above="md">
+                    <Divider orientation="horizontal"/>
+                  </Hide>
+                </Stack>
               </GridItem>
-              <GridItem>
+              <GridItem  width="full">
                 {showDetails ? (
                   <Stack>
                     {g
-                      .filter((d) => !!d.part[0])
+                      .filter((d) => d.part[0]?.kanji)
                       .map((d, idx) => (
                         <Fragment key={d.part[0].kanji}>
-                          <Box p={2}>
-                            <ItemDetails
+                          <ItemDetails
                               data={d}
                               kanjiData={
                                 kanjiData?.[g[0].pronunciation].find((p) =>
@@ -92,7 +97,6 @@ export const AllViewer = (props: {
                                 )?.kanjis
                               }
                             />
-                          </Box>
                           <Divider />
                         </Fragment>
                       ))}
@@ -100,21 +104,21 @@ export const AllViewer = (props: {
                 ) : (
                   <HStack spacing={6} mb={6} flexWrap="wrap">
                     {g
-                      .filter((d) => !!d.part[0])
+                      .filter((d) => d.part[0]?.kanji)
                       .map((d, idx) => (
-                       <Link 
-                       key={d.part[0].kanji}
-                       shadow="md"
-                       boxSize={16}
-                       p={2}
-                       display="flex"
-                       justifyContent="center"
-                       alignItems="center"
-                       href={getPath(`/browse/${KANA_COLUMNS.findIndex(s => s.includes(d.pronunciation?.[0]))}#${d.part[0].kanji}`)}
-                       >
-                          <KanjiDisplay data={d.part[0]} />
-                       </Link>
-                      ))}
+                        <Link 
+                        key={d.part[0].kanji}
+                        shadow="md"
+                        boxSize={16}
+                        p={2}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        href={getPath(`/browse/${KANA_COLUMNS.findIndex(s => s.includes(d.pronunciation?.[0]))}#${d.part[0].kanji}`)}
+                        >
+                            <KanjiDisplay data={d.part[0]} />
+                        </Link>
+                        ))}
                   </HStack>
                 )}
               </GridItem>

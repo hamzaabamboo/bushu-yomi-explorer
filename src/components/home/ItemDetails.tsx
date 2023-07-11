@@ -5,14 +5,14 @@ import { KanjiDisplay } from "../common/KanjiText";
 export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: KanjiData[]}) => {
     const { data: item, kanjiData} = props;
     
-    return <Grid templateColumns="128px 1fr">
+    return <Grid templateColumns={["1fr", null, "128px 1fr"]} width="full">
         <GridItem>
-            <Stack>
+            <Stack id={item.part[0].kanji} mt="-64px" pt="64px">
                 <KanjiDisplay data={item.part[0]} showAlternative/>
             </Stack>
         </GridItem>
         <GridItem>
-        <Stack alignItems="flex-start">
+            <Stack alignItems="flex-start" width="full">
                 {item.kanjis.map((d,idx) => {
                     const data = kanjiData?.find(m => m.kanji === d.kanji[0])
                     if (!data) {
@@ -21,9 +21,9 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
                     const isIrregular = item.pronunciation !== d.reading;
                     
                     return <Box key={d.kanji} backgroundColor={isIrregular? "gray.100" : "unset"}  w="full" py={1}>
-                        <HStack justifyContent="space-between" alignItems="flex-start" w="full" id={d.kanji} mt="-64px" pt="64px">
-                        <Box width={24} mx={2} textAlign="center">
-                         <KanjiDisplay  data={d} />
+                        <HStack justifyContent="space-between" alignItems="flex-start" w="full">
+                        <Box width={24} textAlign="center">
+                        <KanjiDisplay  data={d} />
                         </Box>
                         <Stack width={48}>
                             <Text>{data?.onyomi?.split(",").join(", ") ?? ""}</Text>
@@ -31,12 +31,12 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
                         </Stack>
                         <Stack width="full">
                             {data?.meanings.map(w => w?.split(",").join(", ")).map((w,idx) => 
-                            <Text key={idx}>{w}</Text>)}
+                            <Text whiteSpace="break-spaces" wordBreak="break-word" key={idx}>{w}</Text>)}
                         </Stack>
                     </HStack>
                     </Box>
                 })}
-            </Stack>
+                </Stack>
         </GridItem>
     </Grid>
     
