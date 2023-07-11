@@ -1,4 +1,5 @@
 import { KanjiData, PhoneticSemanticData } from "@/types";
+import { isJoyo } from "@/utils/joyo";
 import { Box, Grid, GridItem, HStack, Stack, Text } from "@chakra-ui/react";
 import { KanjiDisplay } from "../common/KanjiText";
 
@@ -23,7 +24,7 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
                     return <Box key={d.kanji} backgroundColor={isIrregular? "gray.100" : "unset"}  w="full" py={1}>
                         <HStack justifyContent="space-between" alignItems="flex-start" w="full">
                         <Box width={24} textAlign="center">
-                        <KanjiDisplay  data={d} />
+                            <KanjiDisplay data={d}  fontWeight={isJoyo(d.kanji) ? "bold" : "200"}/>
                         </Box>
                         <Stack width={48}>
                             <Text>{data?.onyomi?.split(",").join(", ") ?? ""}</Text>

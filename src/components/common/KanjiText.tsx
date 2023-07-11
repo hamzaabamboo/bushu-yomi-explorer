@@ -6,12 +6,13 @@ export function KanjiDisplay (props: {
   hideFurigana?: boolean
   isSmall?: boolean
   showAlternative?: boolean
+  fontWeight?: string
 }) {
-  const { data, isSmall = false, hideFurigana = false, showAlternative = false} = props
+  const { data, isSmall = false, hideFurigana = false, showAlternative = false, fontWeight: _fontWeight} = props
   const { kanji, reading } = data
 
   const fontSize = isSmall ? 'lg' : '3xl'
-  const fontWeight = isSmall ? 'normal' : 'bold'
+  const fontWeight = _fontWeight || (isSmall ? 'normal' : 'bold')
 
   return (
     <chakra.ruby fontSize={fontSize} textAlign="center" fontFamily="Minchou, Meiryou">
