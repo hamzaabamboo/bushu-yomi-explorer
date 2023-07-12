@@ -3,8 +3,7 @@
 import { KANA_COLUMNS } from "@/data/gojuuon";
 import { PhoneticSemanticData } from "@/types";
 import { getPath } from "@/utils/getPath";
-import { Box, HStack, Input } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
+import { Box, HStack, Input, Link } from "@chakra-ui/react";
 import { debounce } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isKana, toKatakana } from "wanakana";

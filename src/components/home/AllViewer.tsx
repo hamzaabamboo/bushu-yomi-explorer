@@ -3,7 +3,6 @@ import { KANA_COLUMNS } from "@/data/gojuuon";
 import { KanjiData, PhoneticSemanticData } from "@/types";
 import { getPath } from "@/utils/getPath";
 import { isJoyo } from "@/utils/joyo";
-import { Link } from "@chakra-ui/next-js";
 import {
   Divider,
   Grid,
@@ -11,6 +10,7 @@ import {
   HStack,
   Heading,
   Hide,
+  Link,
   Show,
   Stack
 } from "@chakra-ui/react";
@@ -51,7 +51,7 @@ export const AllViewer = (props: {
   return (
     <Stack>
       <HStack>
-      { !showAll ? <Link href={join(pathname, "/all")}>Show All Kanjis</Link> : <Link href={join(pathname, "..")}>Show Joyo Only</Link>}
+      { !showAll ? <Link href={getPath(join(pathname, "/all"))}>Show All Kanjis</Link> : <Link href={getPath(join(pathname, ".."))}>Show Joyo Only</Link>}
       </HStack>
       <Divider />
       <Grid templateColumns={["1fr", null, "80px 1fr"]} gap={6} w="full">
