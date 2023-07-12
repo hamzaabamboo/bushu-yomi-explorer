@@ -20,7 +20,7 @@ export default async function Home() {
       <HomeIntro />
       <Navigation />
       <SearchBar data={data}/>
-      <AllViewer data={data}/>
+      <AllViewer showAll data={data}/>
     </Layout>
   )
 }

@@ -1,6 +1,5 @@
 "use client";
 import { KANA_COLUMNS } from "@/data/gojuuon";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { KanjiData, PhoneticSemanticData } from "@/types";
 import { getPath } from "@/utils/getPath";
 import { isJoyo } from "@/utils/joyo";
@@ -13,11 +12,11 @@ import {
   Heading,
   Hide,
   Show,
-  Stack,
-  Switch,
-  Text
+  Stack
 } from "@chakra-ui/react";
 import { groupBy, values } from "lodash";
+import { usePathname } from "next/navigation";
+import { join } from "path";
 import { Fragment, useMemo } from "react";
 import { KanjiDisplay } from "../common/KanjiText";
 import { ItemDetails } from "./ItemDetails";
@@ -27,14 +26,15 @@ export const AllViewer = (props: {
   kanjiData?: Record<string, { part: string[]; kanjis: KanjiData[] }[]>;
   hideSearch?: boolean;
   showDetails?: boolean;
+  showAll?: boolean;
 }) => {
-  const { data, hideSearch = false, showDetails = false, kanjiData } = props;
-  const [joyo, setJoyo] = useLocalStorage("showJoyo", true);
+  const { data, hideSearch = false, showDetails = false, kanjiData, showAll } = props;
+  const pathname = usePathname();
   const groups = useMemo(
     () =>
       values(
         groupBy(
-          joyo
+          !showAll
             ? data
                 .map((d) => ({
                   ...d,
@@ -45,17 +45,13 @@ export const AllViewer = (props: {
           (d) => d.pronunciation
         )
       ),
-    [data, joyo]
+    [data, showAll]
   );
   
   return (
     <Stack>
       <HStack>
-        <Switch
-          isChecked={joyo ?? true}
-          onChange={(e) => setJoyo(e.target.checked)}
-        />
-        <Text>Show Joyo Only</Text>
+      { !showAll ? <Link href={join(pathname, "/all")}>Show All Kanjis</Link> : <Link href={join(pathname, "..")}>Show Joyo Only</Link>}
       </HStack>
       <Divider />
       <Grid templateColumns={["1fr", null, "80px 1fr"]} gap={6} w="full">
@@ -105,7 +101,7 @@ export const AllViewer = (props: {
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        href={getPath(`/browse/${KANA_COLUMNS.findIndex(s => s.includes(d.pronunciation?.[0]))　}#${d.part[0].kanji}`)}
+                        href={getPath(`/browse/${KANA_COLUMNS.findIndex(s => s.includes(d.pronunciation?.[0]))}${ showAll || !isJoyo(d.part[0].kanji)? "/all": ""}#${d.part[0].kanji}`)}
                         >
                             <KanjiDisplay data={d.part[0]} />
                         </Link>

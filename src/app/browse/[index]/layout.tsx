@@ -7,7 +7,7 @@ import { join } from "path";
 import { ReactNode } from "react";
 
 const fetchData = async () => {
-   const data = JSON.parse(await readFile(join(__dirname, "../../../../../src/data/onpubushu.json"),"utf-8")) 
+   const data = JSON.parse(await readFile(join(process.cwd(), "src/data/onpubushu.json"),"utf-8")) 
 
    return {
     wordsData: data,

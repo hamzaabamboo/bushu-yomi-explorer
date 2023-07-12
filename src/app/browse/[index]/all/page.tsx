@@ -13,7 +13,7 @@ const fetchData = async (row: number) => {
    const kanjiData = JSON.parse(await readFile(join(process.cwd(), `src/data/kanji-data/${row}.json`),"utf-8")) 
 
    return {
-    wordsData: data,
+    wordsData: data.filter((d:PhoneticSemanticData) => KANA_COLUMNS[row].includes(d.pronunciation[0])),
     kanjiData,
     row
    }
@@ -23,5 +23,5 @@ export default async function Home(props: { params: { index: number } }) {
     const { index } = props.params;
   const { wordsData, kanjiData } = await fetchData(Number(index));
 
-  return (<AllViewer data={wordsData.filter((d:PhoneticSemanticData) => KANA_COLUMNS[index].includes(d.pronunciation[0]))} kanjiData={kanjiData} showDetails/>)
+  return (<AllViewer showAll data={wordsData} kanjiData={kanjiData} showDetails/>)
 }
