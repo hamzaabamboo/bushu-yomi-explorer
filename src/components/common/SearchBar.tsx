@@ -3,7 +3,8 @@
 import { KANA_COLUMNS } from "@/data/gojuuon";
 import { PhoneticSemanticData } from "@/types";
 import { getPath } from "@/utils/getPath";
-import { Box, HStack, Input, Link } from "@chakra-ui/react";
+import { Box, HStack, Input } from "@chakra-ui/react";
+import { Link } from '@chakra-ui/next-js';
 import { debounce } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { isKana, toKatakana } from "wanakana";
@@ -33,7 +34,7 @@ export const SearchBar = (props: { data: PhoneticSemanticData[] }) => {
   }, [input]);
 
   return (
-    <Box position="sticky" top="62px" bgColor="white">
+    <Box position="sticky" top="62px" bgColor="white" 　zIndex="200" >
       <Input
         w="full"
         value={input}
@@ -41,7 +42,7 @@ export const SearchBar = (props: { data: PhoneticSemanticData[] }) => {
         mb={2}
         onChange={(e) => setInput(e.target.value)}
       />
-      {results.length > 0 && (<Box position="relative"　zIndex="200">
+      {results.length > 0 && (<Box position="relative"p={2}>
         <HStack position="absolute" width="full" backgroundColor="white" shadow="md" spacing={6} mb={6} flexWrap="wrap" height={100} overflow="auto"　>
           {results
             .filter((d) => d.part[0]?.kanji)
