@@ -103,4 +103,4 @@ export const SearchBar = (props: { data: PhoneticSemanticData[] }) => {
       )}
     </Box>
   );
-};
+}
