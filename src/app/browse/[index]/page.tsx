@@ -1,8 +1,4 @@
-import { Layout } from "@/components/Layout";
-import { Navigation } from "@/components/common/Navigation";
-import { SearchBar } from "@/components/common/SearchBar";
 import { AllViewer } from "@/components/home/AllViewer";
-import { HomeIntro } from "@/components/home/HomeIntro";
 import { KANA_COLUMNS, KANA_ROWS } from "@/data/gojuuon";
 import { PhoneticSemanticData } from "@/types";
 import { readFile } from "fs/promises";
@@ -27,12 +23,5 @@ export default async function Home(props: { params: { index: number } }) {
     const { index } = props.params;
   const { wordsData, kanjiData } = await fetchData(Number(index));
 
-  return (
-    <Layout>
-      <HomeIntro />
-      <Navigation />
-      <SearchBar data={wordsData} />
-      <AllViewer data={wordsData.filter((d:PhoneticSemanticData) => KANA_COLUMNS[index].includes(d.pronunciation[0]))} kanjiData={kanjiData} showDetails/>
-    </Layout>
-  )
+  return (<AllViewer data={wordsData.filter((d:PhoneticSemanticData) => KANA_COLUMNS[index].includes(d.pronunciation[0]))} kanjiData={kanjiData} showDetails/>)
 }
