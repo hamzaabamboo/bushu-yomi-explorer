@@ -28,7 +28,7 @@ jobs:
       - run: pnpm build
         env:
           DEPLOY_TARGET: "gh-pages"
-          NEXT_PUBLIC_BASE_URL: "/bushu-yomi-explorer"
+          NEXT_PUBLIC_BASE_URL: "/onpu-explorer"
           CI: false
 
       - run: touch out/.nojekyll
