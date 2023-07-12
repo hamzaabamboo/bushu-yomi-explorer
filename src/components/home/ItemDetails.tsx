@@ -8,7 +8,7 @@ export const ItemDetails = (props: { data: PhoneticSemanticData, kanjiData?: Kan
     
     return <Grid templateColumns={["1fr", null, "128px 1fr"]} width="full">
         <GridItem>
-            <Stack id={item.part[0].kanji} mt="-64px" pt="64px">
+            <Stack id={item.part[0].kanji} mt="-128px" pt="128px">
                 <KanjiDisplay data={item.part[0]} showAlternative/>
             </Stack>
         </GridItem>
