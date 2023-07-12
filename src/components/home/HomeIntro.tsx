@@ -48,7 +48,7 @@ export const HomeIntro = () => {
               target="__blank"
               color="blue.400"
             >
-              Kanji radicals /"Meaning" part of a kanji
+              Kanji radicals /&quot;Meaning&quot; part of a kanji
             </Link>
           </ListItem>
         </List>
